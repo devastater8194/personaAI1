@@ -53,46 +53,46 @@
 //   return (
 //     <>
 //       <div className="mb-8">
-//         <h2 className="text-2xl font-[family-name:var(--font-plus-jakarta)] font-bold text-white mb-2">
+//         <h2 className="text-2xl font-[family-name:var(--font-heading)] font-bold text-[var(--color-text-primary)] mb-2">
 //           Phase 3 — Review + Approval
 //         </h2>
-//         <p className="text-gray-400">Edit, approve, or reject drafts before they hit the auto-scheduler.</p>
+//         <p className="text-[var(--color-text-secondary)]">Edit, approve, or reject drafts before they hit the auto-scheduler.</p>
 //       </div>
 
 //       <div className="grid grid-cols-4 gap-4 mb-8">
-//         <div className="bg-[#111] border border-white/5 rounded-xl p-4 shadow-lg backdrop-blur-md bg-opacity-80">
-//           <div className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Pending</div>
-//           <div className="text-2xl font-[family-name:var(--font-plus-jakarta)] font-bold text-amber-500 mt-1">{drafts.length}</div>
+//         <div className="bg-[var(--color-brown)] border border-[var(--color-border)] rounded-xl p-4 shadow-lg backdrop-blur-md bg-opacity-80">
+//           <div className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest font-semibold">Pending</div>
+//           <div className="text-2xl font-[family-name:var(--font-heading)] font-bold text-amber-500 mt-1">{drafts.length}</div>
 //         </div>
-//         <div className="bg-[#111] border border-white/5 rounded-xl p-4 shadow-lg backdrop-blur-md bg-opacity-80">
-//           <div className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Approved</div>
-//           <div className="text-2xl font-[family-name:var(--font-plus-jakarta)] font-bold text-emerald-500 mt-1">{stats?.approved_count || 0}</div>
+//         <div className="bg-[var(--color-brown)] border border-[var(--color-border)] rounded-xl p-4 shadow-lg backdrop-blur-md bg-opacity-80">
+//           <div className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest font-semibold">Approved</div>
+//           <div className="text-2xl font-[family-name:var(--font-heading)] font-bold text-emerald-500 mt-1">{stats?.approved_count || 0}</div>
 //         </div>
-//         <div className="bg-[#111] border border-white/5 rounded-xl p-4 shadow-lg backdrop-blur-md bg-opacity-80">
-//           <div className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Scheduled</div>
-//           <div className="text-2xl font-[family-name:var(--font-plus-jakarta)] font-bold text-white mt-1">{stats?.scheduled_count || 0}</div>
+//         <div className="bg-[var(--color-brown)] border border-[var(--color-border)] rounded-xl p-4 shadow-lg backdrop-blur-md bg-opacity-80">
+//           <div className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest font-semibold">Scheduled</div>
+//           <div className="text-2xl font-[family-name:var(--font-heading)] font-bold text-[var(--color-text-primary)] mt-1">{stats?.scheduled_count || 0}</div>
 //         </div>
-//         <div className="bg-[#111] border border-white/5 rounded-xl p-4 shadow-lg backdrop-blur-md bg-opacity-80">
-//           <div className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Posted</div>
-//           <div className="text-2xl font-[family-name:var(--font-plus-jakarta)] font-bold text-gray-500 mt-1">{stats?.posted_count || 0}</div>
+//         <div className="bg-[var(--color-brown)] border border-[var(--color-border)] rounded-xl p-4 shadow-lg backdrop-blur-md bg-opacity-80">
+//           <div className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest font-semibold">Posted</div>
+//           <div className="text-2xl font-[family-name:var(--font-heading)] font-bold text-[var(--color-text-muted)] mt-1">{stats?.posted_count || 0}</div>
 //         </div>
 //       </div>
 
 //       {loading ? (
-//         <div className="text-center text-gray-500 mt-20">Loading pending drafts...</div>
+//         <div className="text-center text-[var(--color-text-muted)] mt-20">Loading pending drafts...</div>
 //       ) : drafts.length === 0 ? (
-//         <div className="bg-[#111] border border-white/5 border-dashed rounded-xl p-16 text-center flex flex-col items-center">
+//         <div className="bg-[var(--color-brown)] border border-[var(--color-border)] border-dashed rounded-xl p-16 text-center flex flex-col items-center">
 //           <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center text-2xl mb-4">✓</div>
-//           <h3 className="text-lg font-bold text-white mb-1">All caught up</h3>
-//           <p className="text-sm text-gray-500 mb-6">You have no posts pending review.</p>
-//           <button onClick={() => window.location.hash = 'generate'} className="bg-white/5 hover:bg-white/10 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors border border-white/10">
+//           <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-1">All caught up</h3>
+//           <p className="text-sm text-[var(--color-text-muted)] mb-6">You have no posts pending review.</p>
+//           <button onClick={() => window.location.hash = 'generate'} className="bg-[var(--color-bg-card)] hover:bg-[var(--color-bg-card)] text-[var(--color-text-primary)] text-sm font-medium px-4 py-2 rounded-lg transition-colors border border-[var(--color-border)]">
 //             Generate more content &rarr;
 //           </button>
 //         </div>
 //       ) : (
 //         <div className="space-y-6">
 //           {drafts.map(draft => (
-//              <div key={draft.id} className="bg-[#111] border border-white/5 rounded-xl p-6">
+//              <div key={draft.id} className="bg-[var(--color-brown)] border border-[var(--color-border)] rounded-xl p-6">
 //                <div className="flex justify-between items-center mb-4">
 //                  <div className="flex items-center gap-3">
 //                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
@@ -102,11 +102,11 @@
 //                    }`}>
 //                      {draft.platform}
 //                    </span>
-//                    <span className="text-[10px] text-gray-500">Topic: {draft.topic}</span>
+//                    <span className="text-[10px] text-[var(--color-text-muted)]">Topic: {draft.topic}</span>
 //                  </div>
 //                </div>
 
-//                <div contentEditable spellCheck="false" suppressContentEditableWarning className="bg-[#1a1a1a] rounded-lg p-4 text-sm text-gray-200 whitespace-pre-wrap leading-relaxed border border-white/5 max-h-64 overflow-y-auto mb-4 focus:outline-none focus:border-indigo-500">
+//                <div contentEditable spellCheck="false" suppressContentEditableWarning className="bg-[var(--color-bg-card)] rounded-lg p-4 text-sm text-gray-200 whitespace-pre-wrap leading-relaxed border border-[var(--color-border)] max-h-64 overflow-y-auto mb-4 focus:outline-none focus:border-[var(--color-accent-primary)]">
 //                  {draft.content}
 //                </div>
 
@@ -129,12 +129,12 @@
 
 import { useState, useEffect, useCallback } from "react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 export default function ReviewView({ user }) {
   const [drafts, setDrafts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
-
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   // ── Fetch drafts via backend API (bypasses RLS via service role) ──
   const fetchDrafts = useCallback(async () => {
@@ -149,7 +149,7 @@ export default function ReviewView({ user }) {
     } finally {
       setLoading(false);
     }
-  }, [user.id, API_URL]);
+  }, [user.id]);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -159,7 +159,7 @@ export default function ReviewView({ user }) {
     } catch (err) {
       console.error("Failed to fetch stats:", err);
     }
-  }, [user.id, API_URL]);
+  }, [user.id]);
 
   useEffect(() => {
     fetchDrafts();
@@ -190,10 +190,10 @@ export default function ReviewView({ user }) {
   return (
     <>
       <div className="mb-8">
-        <h2 className="text-2xl font-[family-name:var(--font-plus-jakarta)] font-bold text-white mb-2">
+        <h2 className="text-2xl font-[family-name:var(--font-heading)] font-bold text-[var(--color-text-primary)] mb-2">
           Phase 3 — Review + Approval
         </h2>
-        <p className="text-gray-400">Edit, approve, or reject drafts before they hit the auto-scheduler.</p>
+        <p className="text-[var(--color-text-secondary)]">Edit, approve, or reject drafts before they hit the auto-scheduler.</p>
       </div>
 
       {/* Stats row */}
@@ -201,12 +201,12 @@ export default function ReviewView({ user }) {
         {[
           { label: "Pending", value: drafts.length, color: "text-amber-500" },
           { label: "Approved", value: stats?.approved_count || 0, color: "text-emerald-500" },
-          { label: "Scheduled", value: stats?.scheduled_count || 0, color: "text-white" },
-          { label: "Posted", value: stats?.posted_count || 0, color: "text-gray-500" },
+          { label: "Scheduled", value: stats?.scheduled_count || 0, color: "text-[var(--color-text-primary)]" },
+          { label: "Posted", value: stats?.posted_count || 0, color: "text-[var(--color-text-muted)]" },
         ].map(s => (
-          <div key={s.label} className="bg-[#111] border border-white/5 rounded-xl p-4">
-            <div className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">{s.label}</div>
-            <div className={`text-2xl font-[family-name:var(--font-plus-jakarta)] font-bold mt-1 ${s.color}`}>
+          <div key={s.label} className="glass-stat border border-[var(--color-border)] rounded-xl p-4">
+            <div className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest font-semibold">{s.label}</div>
+            <div className={`text-2xl font-[family-name:var(--font-heading)] font-bold mt-1 ${s.color}`}>
               {s.value}
             </div>
           </div>
@@ -214,15 +214,15 @@ export default function ReviewView({ user }) {
       </div>
 
       {loading ? (
-        <div className="text-center text-gray-500 mt-20">Loading pending drafts…</div>
+        <div className="text-center text-[var(--color-text-muted)] mt-20">Loading pending drafts…</div>
       ) : drafts.length === 0 ? (
-        <div className="bg-[#111] border border-white/5 border-dashed rounded-xl p-16 text-center flex flex-col items-center">
+        <div className="glass-card border border-[var(--color-border)] border-dashed rounded-xl p-16 text-center flex flex-col items-center">
           <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center text-2xl mb-4">✓</div>
-          <h3 className="text-lg font-bold text-white mb-1">All caught up</h3>
-          <p className="text-sm text-gray-500 mb-6">You have no posts pending review.</p>
+          <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-1">All caught up</h3>
+          <p className="text-sm text-[var(--color-text-muted)] mb-6">You have no posts pending review.</p>
           <button
             onClick={() => window.location.hash = "generate"}
-            className="bg-white/5 hover:bg-white/10 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors border border-white/10"
+            className="bg-[var(--color-bg-card)] hover:bg-[var(--color-bg-card)] text-[var(--color-text-primary)] text-sm font-medium px-4 py-2 rounded-lg transition-colors border border-[var(--color-border)]"
           >
             Generate more content →
           </button>
@@ -230,7 +230,7 @@ export default function ReviewView({ user }) {
       ) : (
         <div className="space-y-6">
           {drafts.map(draft => (
-            <div key={draft.id} className="bg-[#111] border border-white/5 rounded-xl p-6">
+            <div key={draft.id} className="glass-card border border-[var(--color-border)] rounded-xl p-6">
               <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center gap-3">
                   <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${draft.platform === "linkedin" ? "bg-blue-500/20 text-blue-400" :
@@ -239,7 +239,7 @@ export default function ReviewView({ user }) {
                     }`}>
                     {draft.platform}
                   </span>
-                  <span className="text-[10px] text-gray-500">Topic: {draft.topic}</span>
+                  <span className="text-[10px] text-[var(--color-text-muted)]">Topic: {draft.topic}</span>
                 </div>
                 <span className="text-[10px] text-gray-600">
                   {new Date(draft.created_at).toLocaleDateString()}
@@ -250,7 +250,7 @@ export default function ReviewView({ user }) {
                 contentEditable
                 spellCheck="false"
                 suppressContentEditableWarning
-                className="bg-[#1a1a1a] rounded-lg p-4 text-sm text-gray-200 whitespace-pre-wrap leading-relaxed border border-white/5 max-h-64 overflow-y-auto mb-4 focus:outline-none focus:border-indigo-500"
+                className="bg-[var(--color-bg-card)] rounded-lg p-4 text-sm text-gray-200 whitespace-pre-wrap leading-relaxed border border-[var(--color-border)] max-h-64 overflow-y-auto mb-4 focus:outline-none focus:border-[var(--color-accent-primary)]"
               >
                 {draft.content}
               </div>

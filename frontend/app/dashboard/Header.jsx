@@ -56,12 +56,12 @@ export default function Header({ user }) {
   };
 
   return (
-    <header className="h-16 px-8 flex items-center justify-between border-b border-white/5 bg-[#0a0a0b]/60 backdrop-blur-md sticky top-0 z-30">
+    <header className="h-16 px-8 flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-bg-primary)]/60 backdrop-blur-md sticky top-0 z-30">
       <div>
-        <h1 className="font-[family-name:var(--font-plus-jakarta)] font-semibold text-lg text-white">
+        <h1 className="font-[family-name:var(--font-heading)] font-semibold text-lg text-[var(--color-text-primary)]">
           {title}
         </h1>
-        <p className="text-xs text-gray-400">{subtitle}</p>
+        <p className="text-xs text-[var(--color-text-secondary)]">{subtitle}</p>
       </div>
 
       <div className="flex items-center gap-4">
@@ -79,14 +79,14 @@ export default function Header({ user }) {
 
         <button 
           onClick={() => window.location.hash = 'generate'}
-          className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium px-4 py-1.5 rounded-lg transition-colors shadow-lg"
+          className="bg-[var(--color-accent-primary)] text-[var(--color-text-primary)] hover:bg-[var(--color-accent-primary)] text-[var(--color-text-primary)] text-[var(--color-text-primary)] text-sm font-medium px-4 py-1.5 rounded-lg transition-colors shadow-lg"
         >
           + Generate
         </button>
 
         <button 
           onClick={handleSignOut}
-          className="p-1.5 text-gray-400 hover:text-white transition-colors"
+          className="p-1.5 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
           title="Sign Out"
         >
           <LogOut size={18} />

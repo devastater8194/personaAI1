@@ -22,16 +22,16 @@ const SOURCE_ICONS = {
 };
 
 const TAG_ICONS = {
-ai: "🤖",
-saas: "⬡",
-startup: "🚀",
-tech: "💻",
-finance: "📈",
-marketing: "📣",
-content: "📱",
-design: "🎨",
-news: "📰",
-default: "◎",
+ai: "AI",
+saas: "SaaS",
+startup: "Startup",
+tech: "Tech",
+finance: "Finance",
+marketing: "Marketing",
+content: "Content",
+design: "Design",
+news: "News",
+default: "○",
 };
 
 const FREE_SOURCES = [

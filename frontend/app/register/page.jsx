@@ -121,22 +121,22 @@ export default function RegisterPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4 text-white font-[family-name:var(--font-inter)]">
+      <div className="min-h-screen bg-transparent flex items-center justify-center p-4 text-[var(--color-text-primary)] font-[family-name:var(--font-sans)]">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className="w-full max-w-md text-center"
         >
-          <div className="bg-[#111] border border-white/10 rounded-2xl p-8 shadow-xl">
+          <div className="bg-[var(--color-brown)] border border-[var(--color-border)] rounded-2xl p-8 shadow-xl">
             <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-5">
               <span className="text-emerald-400 text-3xl">✓</span>
             </div>
-            <h2 className="font-[family-name:var(--font-plus-jakarta)] text-2xl font-bold mb-3">Account Created!</h2>
-            <p className="text-gray-400 text-sm mb-6">
-              We've sent a confirmation link to <span className="text-white font-medium">{formData.email}</span>.
+            <h2 className="font-[family-name:var(--font-heading)] text-2xl font-bold mb-3">Account Created!</h2>
+            <p className="text-[var(--color-text-secondary)] text-sm mb-6">
+              We've sent a confirmation link to <span className="text-[var(--color-text-primary)] font-medium">{formData.email}</span>.
               Please check your inbox and click the link to activate your account.
             </p>
-            <Link href="/login" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-3 rounded-xl transition-colors">
+            <Link href="/login" className="inline-block bg-[var(--color-accent-primary)] text-[var(--color-text-primary)] hover:bg-[var(--color-accent-hover)] text-[var(--color-text-primary)] font-medium px-6 py-3 rounded-xl transition-colors">
               Go to Login
             </Link>
           </div>
@@ -146,9 +146,9 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4 text-white font-[family-name:var(--font-inter)]">
+    <div className="min-h-screen bg-transparent flex items-center justify-center p-4 text-[var(--color-text-primary)] font-[family-name:var(--font-sans)]">
       
-      <Link href="/" className="absolute top-8 left-8 text-gray-400 hover:text-white flex items-center gap-2 transition-colors">
+      <Link href="/" className="absolute top-8 left-8 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] flex items-center gap-2 transition-colors">
         <span>←</span> Back to Home
       </Link>
 
@@ -159,13 +159,13 @@ export default function RegisterPage() {
         className="w-full max-w-md"
       >
         <div className="text-center mb-8">
-          <div className="font-[family-name:var(--font-plus-jakarta)] font-bold text-3xl tracking-tight mb-2">
-            Join Persona<span className="text-indigo-500">AI</span>
+          <div className="font-[family-name:var(--font-heading)] font-bold text-3xl tracking-tight mb-2">
+            Join Persona<span className="text-[var(--color-accent-primary)]">AI</span>
           </div>
-          <p className="text-gray-400 text-sm">Create your identity-first content engine</p>
+          <p className="text-[var(--color-text-secondary)] text-sm">Create your identity-first content engine</p>
         </div>
 
-        <div className="bg-[#111] border border-white/10 rounded-2xl p-8 shadow-xl">
+        <div className="bg-[var(--color-brown)] border border-[var(--color-border)] rounded-2xl p-8 shadow-xl">
           {error && (
             <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
               {error}
@@ -174,33 +174,33 @@ export default function RegisterPage() {
 
           <form onSubmit={handleRegister} className="space-y-5">
             <div>
-              <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Full Name</label>
+              <label className="block text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider mb-2">Full Name</label>
               <input 
                 type="text" 
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                className="w-full bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl px-4 py-3 text-[var(--color-text-primary)] focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
                 placeholder="Manan Shah"
               />
             </div>
             
             <div>
-              <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Email Address</label>
+              <label className="block text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider mb-2">Email Address</label>
               <input 
                 type="email" 
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                className="w-full bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl px-4 py-3 text-[var(--color-text-primary)] focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Password</label>
+              <label className="block text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider mb-2">Password</label>
               <input 
                 type="password" 
                 name="password"
@@ -208,13 +208,13 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 required
                 minLength={6}
-                className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                className="w-full bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl px-4 py-3 text-[var(--color-text-primary)] focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
                 placeholder="••••••••"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Confirm Password</label>
+              <label className="block text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider mb-2">Confirm Password</label>
               <input 
                 type="password" 
                 name="confirmPassword"
@@ -222,7 +222,7 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 required
                 minLength={6}
-                className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                className="w-full bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl px-4 py-3 text-[var(--color-text-primary)] focus:outline-none focus:border-[var(--color-accent-primary)] transition-colors"
                 placeholder="••••••••"
               />
             </div>
@@ -230,7 +230,7 @@ export default function RegisterPage() {
             <button 
               type="submit" 
               disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-medium py-3 rounded-xl transition-colors mt-2 flex items-center justify-center gap-2"
+              className="w-full bg-[var(--color-accent-primary)] text-[var(--color-text-primary)] hover:bg-[var(--color-accent-hover)] disabled:opacity-50 text-[var(--color-text-primary)] font-medium py-3 rounded-xl transition-colors mt-2 flex items-center justify-center gap-2"
             >
               {loading ? (
                 <><span className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></span> Creating account...</>
@@ -240,9 +240,9 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <div className="mt-8 text-center text-sm text-gray-500">
+          <div className="mt-8 text-center text-sm text-[var(--color-text-muted)]">
             Already have an account?{' '}
-            <Link href="/login" className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium">
+            <Link href="/login" className="text-[var(--color-accent-primary)] hover:text-indigo-300 transition-colors font-medium">
               Sign in
             </Link>
           </div>

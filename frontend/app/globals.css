@@ -1,78 +1,50 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fdfdfd;
-  --foreground: #111827;
-
-  /* Dashboard variables mapped to new styling (if needed universally) */
-  --bg: #ffffff;
-  --bg2: #f9fafb;
-  --bg3: #f3f4f6;
-  --bg4: #e5e7eb;
-  --border: rgba(0, 0, 0, 0.08);
-  --border2: rgba(0, 0, 0, 0.15);
-  --text: #111827;
-  --text2: #4b5563;
-  --text3: #6b7280;
-  --accent: #4f46e5;
-  --accent2: #4338ca;
-  --accent-glow: rgba(79, 70, 229, 0.1);
-  --green: #10b981;
-  --green-bg: rgba(16, 185, 129, 0.1);
-  --amber: #f59e0b;
-  --amber-bg: rgba(245, 158, 11, 0.1);
-  --red: #ef4444;
-  --red-bg: rgba(239, 68, 68, 0.1);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #09090b;
-    --foreground: #fafafa;
-    
-    --bg: #09090b;
-    --bg2: #18181b;
-    --bg3: #27272a;
-    --bg4: #3f3f46;
-    --border: rgba(255, 255, 255, 0.1);
-    --border2: rgba(255, 255, 255, 0.15);
-    --text: #fafafa;
-    --text2: #a1a1aa;
-    --text3: #71717a;
-    --accent: #6366f1;
-    --accent2: #4f46e5;
-    --accent-glow: rgba(99, 102, 241, 0.15);
-    --green: #10b981;
-    --green-bg: rgba(16, 185, 129, 0.1);
-    --amber: #f59e0b;
-    --amber-bg: rgba(245, 158, 11, 0.1);
-    --red: #ef4444;
-    --red-bg: rgba(239, 68, 68, 0.1);
-  }
+  --color-bg-primary:       #FDFAF5;
+  --color-bg-secondary:     #F5EDD9;
+  --color-bg-card:          #FFF8EC;
+  --color-bg-sidebar:       #2C1A0E;
+  --color-accent-primary:   #C8860A;
+  --color-accent-secondary: #E8A020;
+  --color-accent-hover:     #A06A08;
+  --color-text-primary:     #1C0F00;
+  --color-text-secondary:   #6B4C2A;
+  --color-text-muted:       #A07850;
+  --color-border:           #DFC99A;
+  --color-border-secondary: #EDD9A3;
+  --color-sidebar-text:     #F5DFA0;
+  --color-sidebar-active:   #C8860A;
+  --color-danger:           #B94040;
+  --color-success:          #5A7A3A;
+  --color-brown:            #4A3728;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-<<<<<<< HEAD
-  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
-=======
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
->>>>>>> 3550e4025e2ea1d825a4f61847e1207ce320f2cc
+  --color-background: var(--color-bg-primary);
+  --color-foreground: var(--color-text-primary);
+  --color-brown: var(--color-brown);
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--color-bg-primary);
+  background-image: 
+    radial-gradient(circle at 0% 0%, var(--color-bg-secondary) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, var(--color-bg-secondary) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, var(--color-bg-card) 0%, transparent 70%);
+  background-attachment: fixed;
+  color: var(--color-text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
+  color: var(--color-text-primary);
 }
 
 /* Animations */
@@ -88,4 +60,117 @@ h1, h2, h3, h4, h5, h6 {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+@keyframes bgDrift {
+  0%   { background-position: 0% 0%, 100% 0%, 60% 100%, 0% 100%, 100% 50%; }
+  50%  { background-position: 5% 10%, 95% 5%, 55% 95%, 5% 95%, 95% 55%; }
+  100% { background-position: 0% 0%, 100% 0%, 60% 100%, 0% 100%, 100% 50%; }
+}
+
+/* Dashboard Background Gradient */
+.dashboard-bg {
+  background: 
+    radial-gradient(ellipse at 20% 20%, #F5DEB3 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 10%, #E8C97A 0%, transparent 45%),
+    radial-gradient(ellipse at 60% 80%, #D4A843 0%, transparent 50%),
+    radial-gradient(ellipse at 10% 85%, #C8860A22 0%, transparent 45%),
+    radial-gradient(ellipse at 90% 60%, #F0E0B0 0%, transparent 40%),
+    #FDFAF5;
+  background-attachment: fixed;
+  background-size: 200% 200%, 200% 200%, 200% 200%, 200% 200%, 200% 200%;
+  animation: bgDrift 20s ease-in-out infinite;
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+  background: rgba(255, 248, 230, 0.45);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(220, 185, 120, 0.35);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(120, 80, 20, 0.08), 0 1px 2px rgba(255, 255, 255, 0.6) inset;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(120, 80, 20, 0.13), 0 1px 2px rgba(255, 255, 255, 0.7) inset;
+}
+
+/* Stat Cards (More Opaque) */
+.glass-stat {
+  background: rgba(255, 248, 230, 0.65);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(220, 185, 120, 0.35);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(120, 80, 20, 0.08), 0 1px 2px rgba(255, 255, 255, 0.6) inset;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-stat:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(120, 80, 20, 0.13), 0 1px 2px rgba(255, 255, 255, 0.7) inset;
+}
+
+/* Modal/Drawer Glass */
+.glass-modal {
+  background: rgba(255, 250, 240, 0.75);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(220, 185, 120, 0.4);
+  box-shadow: 0 8px 40px rgba(100, 60, 10, 0.15);
+}
+
+/* Glass Input Fields */
+.glass-input {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(200, 160, 80, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.glass-input:focus {
+  border-color: var(--color-accent-secondary);
+  outline: none;
+}
+
+/* Table Row Alternation */
+.table-row-odd {
+  background: rgba(255, 248, 220, 0.3);
+}
+
+.table-row-even {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.table-row-even:hover,
+.table-row-odd:hover {
+  background: rgba(232, 160, 32, 0.12);
+}
+
+/* Apply glass input styling to inputs and textareas within glass containers */
+.glass-card input,
+.glass-card textarea,
+.glass-stat input,
+.glass-stat textarea,
+.glass-modal input,
+.glass-modal textarea,
+.glass-modal select {
+  background: rgba(255, 255, 255, 0.55) !important;
+  border: 1px solid rgba(200, 160, 80, 0.4) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.glass-card input:focus,
+.glass-card textarea:focus,
+.glass-stat input:focus,
+.glass-stat textarea:focus,
+.glass-modal input:focus,
+.glass-modal textarea:focus,
+.glass-modal select:focus {
+  border-color: var(--color-accent-secondary) !important;
+  outline: none;
 }

@@ -1,27 +1,14 @@
 import type { Metadata } from "next";
-<<<<<<< HEAD
-import { Manrope, Outfit } from "next/font/google";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
-const manrope = Manrope({
-  variable: "--font-manrope",
-  subsets: ["latin"],
+const dmSans = DM_Sans({
+  variable: "--font-sans",
+  subsets: ["latin"], 
 });
 
-const outfit = Outfit({
-  variable: "--font-outfit",
-=======
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
-import "./globals.css";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
->>>>>>> 3550e4025e2ea1d825a4f61847e1207ce320f2cc
+const playfair = Playfair_Display({
+  variable: "--font-heading",
   subsets: ["latin"],
 });
 
@@ -38,11 +25,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-<<<<<<< HEAD
-      className={`${manrope.variable} ${outfit.variable} h-full antialiased`}
-=======
-      className={`${inter.variable} ${plusJakarta.variable} h-full antialiased`}
->>>>>>> 3550e4025e2ea1d825a4f61847e1207ce320f2cc
+      className={`${dmSans.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

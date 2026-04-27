@@ -1,17 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "../lib/supabase";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import MagicRings from "../components/MagicRings";
 
 export default function DashboardLayout({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -43,8 +42,8 @@ export default function DashboardLayout({ children }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0b] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
+      <div className="min-h-screen bg-[var(--color-bg-primary)] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-accent-primary)]"></div>
       </div>
     );
   }
@@ -52,16 +51,7 @@ export default function DashboardLayout({ children }) {
   if (!user) return null;
 
   return (
-    <div className="flex h-screen bg-[#0a0a0b] text-gray-100 font-[family-name:var(--font-inter)] overflow-hidden relative">
-      <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
-        <MagicRings 
-          color="#fc42ff"
-          colorTwo="#42fcff"
-          speed={0.5}
-          ringCount={5}
-          attenuation={15}
-        />
-      </div>
+    <div className="flex h-screen bg-transparent text-[var(--color-text-primary)] font-[family-name:var(--font-sans)] overflow-hidden relative dashboard-bg">
 
       {/* Sidebar */}
       <div className="z-10 h-full flex flex-col md:flex">

@@ -44,7 +44,7 @@ export default function DashboardPage() {
       {activeTab === "review" && <ReviewView user={user} />}
       {activeTab === "schedule" && <ScheduleView user={user} />}
       {activeTab === "notifications" && (
-        <div className="text-gray-400 text-center mt-20">Notifications center coming soon!</div>
+        <div className="text-[var(--color-text-secondary)] text-center mt-20">Notifications center coming soon!</div>
       )}
     </div>
   );
