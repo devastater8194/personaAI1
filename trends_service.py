@@ -1786,15 +1786,33 @@ def fetch_article_text(url: str) -> str:
     """Fetches the main text content of an article given its URL."""
     try:
         import httpx
-        with httpx.Client(timeout=10.0, follow_redirects=True) as client:
-            headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-            resp = client.get(url, headers=headers)
-            resp.raise_for_status()
-            soup = BeautifulSoup(resp.text, 'html.parser')
-            text = " ".join([p.get_text() for p in soup.find_all(['p', 'h1', 'h2', 'h3', 'li'])])
-            if len(text.strip()) < 50:
-                return "Not enough content extracted. The page might be protected or require JS."
-            return text[:6000]
+        from bs4 import BeautifulSoup
+        
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.5",
+        }
+        
+        with httpx.Client(timeout=15.0, follow_redirects=True) as client:
+            try:
+                resp = client.get(url, headers=headers)
+                resp.raise_for_status()
+                soup = BeautifulSoup(resp.text, 'html.parser')
+                text = " ".join([p.get_text() for p in soup.find_all(['p', 'h1', 'h2', 'h3', 'li'])])
+                
+                if len(text.strip()) > 100:
+                    return text[:8000]
+            except Exception as e:
+                logger.warning(f"Primary fetch failed for {url}: {e}")
+
+            # Fallback to Jina Reader API
+            jina_url = f"https://r.jina.ai/{url}"
+            resp = client.get(jina_url, headers=headers)
+            if resp.status_code == 200 and len(resp.text.strip()) > 50:
+                return resp.text[:8000]
+                
+            return "Not enough content extracted or page blocked."
     except Exception as e:
         return f"Failed to extract text: {e}"
 

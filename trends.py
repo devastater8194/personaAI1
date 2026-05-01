@@ -99,19 +99,18 @@ async def get_trends(user_id: str, topic: Optional[str] = None):
         .maybe_single()
         .execute()
     )
-    if not identity or not getattr(identity, "data", None):
-        raise HTTPException(
-            status_code=404,
-            detail="Identity not found. Save your profile first."
-        )
 
     if topic:
         domain = topic
         interests = ""
         logger.info(f"[trends] Fetching for user={user_id} topic='{topic}'")
     else:
-        domain = identity.data.get("domain") or "technology"
-        interests = identity.data.get("interests") or ""
+        if identity and getattr(identity, "data", None):
+            domain = identity.data.get("domain") or "technology"
+            interests = identity.data.get("interests") or ""
+        else:
+            domain = "technology"
+            interests = ""
         logger.info(f"[trends] Fetching for user={user_id} domain='{domain}'")
 
     # ── Fetch live trends ─────────────────────────────────────────────────────

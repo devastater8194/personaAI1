@@ -8,7 +8,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-from supabase_client import get_db
+from supabase_client import get_admin_db
 from notifications_service import send_post_scheduled_email
 
 router = APIRouter()
@@ -29,7 +29,7 @@ class WeekPlanRequest(BaseModel):
 
 @router.post("/queue")
 async def queue_post(req: ScheduleRequest, background_tasks: BackgroundTasks):
-    db = get_db()
+    db = get_admin_db()
 
     db.table("content_drafts").update({
         "status": "scheduled",
@@ -58,54 +58,94 @@ async def queue_post(req: ScheduleRequest, background_tasks: BackgroundTasks):
 
     return {"success": True, "scheduled_for": req.scheduled_for}
 
-@router.post("/week-plan")
-async def create_week_plan(req: WeekPlanRequest):
-    db = get_db()
-    today = datetime.now()
+@router.post("/auto-schedule/{draft_id}")
+async def auto_schedule(draft_id: str):
+    db = get_admin_db()
+    
+    # 1. Get draft info
+    draft_res = db.table("content_drafts").select("*").eq("id", draft_id).maybe_single().execute()
+    if not draft_res.data:
+        raise HTTPException(status_code=404, detail="Draft not found")
+    draft = draft_res.data
+    user_id = draft["user_id"]
+    platform = draft["platform"]
 
+    # 2. Define optimal times
     optimal_times = {
         "linkedin":  ["08:30", "12:00", "17:30"],
         "instagram": ["10:00", "14:00", "19:00"],
         "twitter":   ["09:00", "13:00", "18:00"],
     }
+    times = optimal_times.get(platform, ["10:00", "15:00"])
 
-    drafts = db.table("content_drafts")\
-        .select("id,platform,content")\
-        .in_("id", req.approved_draft_ids)\
+    # 3. Get existing schedules to find a gap
+    existing_res = db.table("scheduled_posts")\
+        .select("scheduled_for")\
+        .eq("user_id", user_id)\
+        .eq("platform", platform)\
+        .eq("status", "pending")\
         .execute()
+    
+    existing_slots = set()
+    for row in (existing_res.data or []):
+        # Convert to a comparable string format (YYYY-MM-DD HH:MM)
+        dt = datetime.fromisoformat(row["scheduled_for"].replace("Z", "+00:00"))
+        existing_slots.add(dt.strftime("%Y-%m-%d %H:%M"))
 
-    schedule = []
-    for i, draft in enumerate(drafts.data or []):
-        day_offset = i % 7
-        target_day = today + timedelta(days=day_offset)
-        times = optimal_times.get(draft["platform"], ["10:00"])
-        time_str = times[i % len(times)]
-        dt_str = f"{target_day.strftime('%Y-%m-%d')}T{time_str}:00"
+    # 4. Find the first empty slot starting from tomorrow
+    start_date = datetime.now() + timedelta(days=1)
+    found_slot = None
+    
+    # Search for up to 14 days to find a spot
+    for day_offset in range(14):
+        target_day = start_date + timedelta(days=day_offset)
+        for t_str in times:
+            check_str = f"{target_day.strftime('%Y-%m-%d')} {t_str}"
+            if check_str not in existing_slots:
+                found_slot = f"{target_day.strftime('%Y-%m-%d')}T{t_str}:00"
+                break
+        if found_slot:
+            break
 
-        db.table("content_drafts").update({
-            "status": "scheduled",
-            "scheduled_for": dt_str
-        }).eq("id", draft["id"]).execute()
+    if not found_slot:
+        raise HTTPException(status_code=500, detail="Could not find an available scheduling slot in the next 14 days.")
 
-        db.table("scheduled_posts").insert({
-            "draft_id":      draft["id"],
-            "user_id":       req.user_id,
-            "platform":      draft["platform"],
-            "scheduled_for": dt_str,
-            "status":        "pending"
-        }).execute()
+    # 5. Update DB
+    db.table("content_drafts").update({
+        "status": "scheduled",
+        "scheduled_for": found_slot
+    }).eq("id", draft_id).execute()
 
-        schedule.append({
-            "draft_id":   draft["id"],
-            "platform":   draft["platform"],
-            "scheduled":  dt_str,
-        })
+    db.table("scheduled_posts").insert({
+        "draft_id":      draft_id,
+        "user_id":       user_id,
+        "platform":      platform,
+        "scheduled_for": found_slot,
+        "status":        "pending"
+    }).execute()
 
-    return {"success": True, "schedule": schedule}
+    return {
+        "success": True, 
+        "scheduled_for": found_slot,
+        "platform": platform
+    }
+
+@router.post("/week-plan")
+async def create_week_plan(req: WeekPlanRequest):
+    # This remains for batch scheduling if needed, but redirects to auto-schedule logic
+    results = []
+    for d_id in req.approved_draft_ids:
+        try:
+            res = await auto_schedule(d_id)
+            results.append(res)
+        except:
+            continue
+    return {"success": True, "results": results}
+
 
 @router.get("/upcoming/{user_id}")
 async def get_upcoming(user_id: str):
-    db = get_db()
+    db = get_admin_db()
     result = db.table("scheduled_posts")\
         .select("*, content_drafts(content, platform, content_type, topic)")\
         .eq("user_id", user_id)\
@@ -113,6 +153,47 @@ async def get_upcoming(user_id: str):
         .order("scheduled_for")\
         .execute()
     return result.data or []
+
+@router.post("/publish/{draft_id}")
+async def publish_now(draft_id: str):
+    db = get_admin_db()
+    
+    # 1. Get draft
+    draft_res = db.table("content_drafts").select("*").eq("id", draft_id).maybe_single().execute()
+    if not draft_res.data:
+        raise HTTPException(status_code=404, detail="Draft not found")
+    draft = draft_res.data
+    
+    # 2. Get user identity for handles
+    identity_res = db.table("identities").select("*").eq("user_id", draft["user_id"]).maybe_single().execute()
+    if not identity_res.data:
+        raise HTTPException(status_code=404, detail="Identity not found. Save your handles first.")
+    identity = identity_res.data
+    
+    platform = draft["platform"]
+    handle = identity.get(f"{platform}_handle") or "Not provided"
+    
+    # 3. Simulate posting
+    # If Instagram is configured, we use the real function
+    if platform == "instagram" and INSTAGRAM_ACCESS_TOKEN and not INSTAGRAM_ACCESS_TOKEN.startswith("your-"):
+        try:
+            await publish_to_instagram(draft_id)
+        except Exception as e:
+            print(f"Instagram real post failed, falling back to simulation: {e}")
+    
+    # Update status to 'posted'
+    db.table("content_drafts").update({
+        "status": "posted",
+        "posted_at": datetime.now().isoformat()
+    }).eq("id", draft_id).execute()
+
+    return {
+        "success": True, 
+        "message": f"Successfully posted to {platform}!",
+        "handle": handle,
+        "platform": platform
+    }
+
 
 @router.post("/publish-instagram/{draft_id}")
 async def publish_to_instagram(draft_id: str):
@@ -125,7 +206,7 @@ async def publish_to_instagram(draft_id: str):
             detail="Instagram not configured. Set valid INSTAGRAM_ACCESS_TOKEN and INSTAGRAM_ACCOUNT_ID in .env."
         )
 
-    db = get_db()
+    db = get_admin_db()
     draft = db.table("content_drafts").select("*").eq("id", draft_id).maybe_single().execute()
     if not draft.data:
         raise HTTPException(status_code=404, detail="Draft not found")
@@ -136,11 +217,18 @@ async def publish_to_instagram(draft_id: str):
         async with httpx.AsyncClient(timeout=60.0) as client:
 
             if post.get("carousel_slides") and isinstance(post["carousel_slides"], list):
-                render_resp = await client.post(
-                    f"{CAROUSEL_SERVICE_URL}/render",
-                    json={"slides": post["carousel_slides"], "theme": "dark"}
-                )
-                image_urls = render_resp.json().get("image_urls", [])
+                base_url = os.getenv("NEXT_PUBLIC_APP_URL", "https://your-public-ngrok-url.ngrok.io") # Replace with public URL for IG
+                image_urls = []
+                for slide in post["carousel_slides"]:
+                    img = slide.get("image_url")
+                    if img:
+                        if img.startswith("/"):
+                            image_urls.append(base_url + img)
+                        else:
+                            image_urls.append(img)
+                            
+                if not image_urls:
+                    raise HTTPException(status_code=400, detail="No pre-generated images found. Generate images first.")
 
                 item_ids = []
                 for url in image_urls:

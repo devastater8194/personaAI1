@@ -13,7 +13,7 @@ from trends import router as trends_router
 from schedule import router as schedule_router
 from notifications_service import router as notif_router
 from auth import router as auth_router
-from supabase_client import get_db
+from supabase_client import get_admin_db
 
 app = FastAPI(
     title="Persona AI Content Engine",
@@ -55,7 +55,7 @@ async def health():
 
 @app.get("/api/stats/{user_id}")
 async def get_stats(user_id: str):
-    db = get_db()
+    db = get_admin_db()
 
     drafts_resp = db.table("content_drafts").select("status").eq("user_id", user_id).execute()
     drafts = drafts_resp.data or []
