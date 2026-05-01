@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from supabase_client import get_db
+from supabase_client import get_db, get_admin_db
 import os
 
 router = APIRouter()
@@ -46,11 +46,11 @@ async def register(payload: RegisterPayload):
         user_id = auth_response.user.id
  
         try:
-            db = get_db()
+            db = get_admin_db()  # Must use admin client to bypass RLS
             db.table("identities").upsert({
                 "user_id": user_id,
                 "name": payload.name,
-                "embedding": [0.0] * 1536,
+                "embedding": [0.0] * 768,  # 768-dim to match Supabase pgvector column
             }, on_conflict="user_id").execute()
         except Exception as e:
             print(f"  Identity row creation failed (non-fatal): {e}")

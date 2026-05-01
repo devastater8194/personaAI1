@@ -22,8 +22,10 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",        
-        "https://your-domain.com",      
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -49,8 +51,8 @@ async def health():
 
 @app.get("/api/stats/{user_id}")
 async def get_stats(user_id: str):
-    from supabase_client import get_db
-    db = get_db()
+    from supabase_client import get_admin_db
+    db = get_admin_db()
     
     drafts_resp = db.table("content_drafts").select("status").eq("user_id", user_id).execute()
     drafts = drafts_resp.data or []
@@ -61,10 +63,17 @@ async def get_stats(user_id: str):
     posted_drafts = sum(1 for d in drafts if d.get("status") == "posted")
     total_drafts = len(drafts)
     
-    trends_resp = db.table("trends_cache").select("id", count="exact").eq("user_id", user_id).execute()
-    trends_count = trends_resp.count or 0
-    scheduled_resp = db.table("scheduled_posts").select("scheduled_for", "platform").eq("user_id", user_id).eq("status", "pending").order("scheduled_for").limit(1).execute()
-    next_scheduled = scheduled_resp.data[0] if scheduled_resp.data else None
+    try:
+        trends_resp = db.table("trends_cache").select("id", count="exact").eq("user_id", user_id).execute()
+        trends_count = trends_resp.count or 0
+    except Exception:
+        trends_count = 0
+
+    try:
+        scheduled_resp = db.table("scheduled_posts").select("scheduled_for", "platform").eq("user_id", user_id).eq("status", "pending").order("scheduled_for").limit(1).execute()
+        next_scheduled = scheduled_resp.data[0] if scheduled_resp.data else None
+    except Exception:
+        next_scheduled = None
 
     return {
         "success": True,
